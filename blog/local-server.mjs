@@ -2,6 +2,8 @@ import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { watch } from 'chokidar';
 
+const port = 1687;
+const staticPort = process.argv[3];
 const xhtmlHeader = {
 	'Content-Type': 'application/xhtml+xml'
 };
@@ -34,15 +36,18 @@ let updates = 0;
 createServer(function (req, res) {
 	if (req.url === '/sse') {
 		res.writeHead(200, sseHeader);
+		res.write('\n');
 		connected.add(res);
 		req.on('close', () => connected.delete(res));
 		return;
 	}
 	readFile(infixPath, 'utf-8').then(function (contents) {
 		res.writeHead(200, xhtmlHeader);
-		res.end(prefix + contents + suffix);
+		res.end((prefix + contents + suffix)
+			.replaceAll('="https://home.6t.lt', '="http://localhost:' + staticPort)
+			.replaceAll('src="https://', 'src="example:'));
 	});
-}).listen(1687, () => console.log("Listening at http://localhost:1687/"));
+}).listen(port, () => console.log(`Listening at http://localhost:${port}/`));
 
 watch(infixPath).on('change', function (path) {
 	connected.forEach(res => res.write('data: reload\n\n'));
