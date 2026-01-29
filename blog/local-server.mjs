@@ -38,7 +38,10 @@ createServer(function (req, res) {
 		res.writeHead(200, sseHeader);
 		res.write('\n');
 		connected.add(res);
-		req.on('close', () => connected.delete(res));
+		req.on('close', function () {
+			console.log('Connection closed:', req.headers['user-agent']);
+			connected.delete(res);
+		});
 		return;
 	}
 	readFile(infixPath, 'utf-8').then(function (contents) {
