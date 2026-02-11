@@ -13,8 +13,20 @@ function parseCoord(n: number, logStep: number | undefined): SplitCoord {
 	let fullBase = (naturalPart + fractionPart).replace(/^0+/, '');
 	let power = Number(exponentPart) - fractionPart.length;
 	if (logStep !== undefined && power - logStep < 0) {
+		const cutDigit = Number(fullBase.at(power - logStep) ?? 0);
 		fullBase = fullBase.slice(0, power - logStep);
-		power += logStep;
+		power = logStep;
+		if (cutDigit >= 5) {
+			const preLen = fullBase.length;
+			fullBase = fullBase.replace(/9+$/, '');
+			power += preLen - fullBase.length;
+			if (fullBase.length == 0) {
+				fullBase = '1';
+			} else {
+				const endDigit = Number(fullBase.at(-1));
+				fullBase = fullBase.slice(0, -1) + (endDigit + 1);
+			}
+		}
 	}
 	if (fullBase.length == 0) {
 		return ['', '0', 'e', 0];
@@ -34,7 +46,7 @@ function shortCoord(coord: SplitCoord): string {
 	const [sign, shortBase, , power] = coord;
 	if (power >= 2) {
 		return coord.join('');
-		// '0'.repeat(power) is not shorter than `e${power}`, and there's no benefit to using a different exponent. Appending '0' to shortBase decreases exponent by 1, but power > 1 so the decimal representation of the exponent won't decrease in length by more than one character. To justify inserting '.' into shortBase, the exponent part would need to decrease in length, but adding the decimal point only increases the exponent.
+		// '0'.repeat(power) is not shorter than `e${power}`, and there's no benefit to using a different exponent. Appending '0' to shortBase decreases exponent by 1, but since power > 1 the decimal representation of the exponent won't decrease in length by more than one character. To justify inserting '.' into shortBase, the exponent part would need to decrease in length, but moving the decimal point to the left of its implicit position only increases the exponent.
 	}
 	if (power == 0 || power == 1) {
 		return sign + shortBase + '0'.repeat(power);
@@ -49,32 +61,57 @@ function shortCoord(coord: SplitCoord): string {
 		return sign + '.0' + shortBase;
 		// Adds two characters, but the result always starts with '.' or '-.' which cannot be improved upon.
 	}
-	const l = -power - shortBase.length;
+	const z = -power - shortBase.length;
+	// At this point, -power >= shortBase.length + 2, so z >= 2, and z is the number of zeros to be inserted between '.' and shortBase when not using an exponent.
 	const minExp = 'e' + power.toString();
-	const midExp = 'e' + (-l).toString();
-	if (l <= midExp.length && l < minExp.length) {
-		return sign + '.' + '0'.repeat(l) + shortBase;
-		// a
+	// The exponent used when not inserting a decimal point.
+	const midExp = 'e' + (-z).toString();
+	// A larger (less negative) exponent used when inserting '.' directly to the left of shortBase. Since shortBase.length >= 1, we know z <= -power - 1, and -z >= power + 1.
+	if (z + 1 <= minExp.length && z <= midExp.length) {
+		return sign + '.' + '0'.repeat(z) + shortBase;
+		// Without an exponent the result has a leading '.' and is not longer than the two exponent options. To show this is minimal, note that the result string will fall into one of three categories: (1) No exponent, (2) uses exponent but not '.', (3) uses '.' and exponent. For the first case, we prepend '.' and a fixed number of zeros, and this form is considered for output. In the second case, the decimal point is set implicitly, the exponent is minExp, and we consider this form for output. In the third case, we only consider a single form for output. This form uses midExp, and no other form using both '.' and an exponent is shorter. If we were to move the decimal to the left, we would add '0' at each step and increment the exponent. These steps can't reduce the length of the exponent by more than one, so adding the zeros cannot shorten the result. Moving the decimal to the right potentially adds zeros to the right of shortBase, and only makes the exponent more negative. We just need to consider one possible result from each of the three categories.
 	}
-	if (midExp.length < minExp.length) {
+	if (midExp.length + 1 <= minExp.length) {
 		return sign + '.' + shortBase + midExp;
-		// b
+		// The midExp form is preferred over minExp because of the leading decimal point.
 	}
 	return sign + shortBase + minExp;
-	// power == -shortBase.length - X
-	// no 'e': adds X+1 characters, starts with '.' or '-.'
-	// no '.': adds `e${-shortBase.length - X}`.length characters, doesn't start with '.'
-	// uses starting '.' and 'e': (Y <= X) adds X+1-Y plus `e${-Y}`.length characters
-	// Y ranges from 0 to -power-shortBase.length
 }
 
-
-
-const testcases = [-0, -0.0012345678, -1.2e4, -100, 1e-3, 1e-10];
+function testShortCoord() {
+	const input = [
+		['0', 0.000, 0e0, 0e-14],
+		['1e2', 1000e-1, 100, 1e2, .01e4],
+		['-123e10', -123e10],
+		['-12', -12],
+		['1230', 1230, 1.23e3],
+		['-1.2', -1.2],
+		['12345.6789', 12345.67890, .1234567890e5],
+		['-.01', -.01, -0.01e0],
+		['.0123', .0123, 123e-4],
+		['.0012345678', .0012345678, 12345678e-10, .12345678e-2],
+		['-.001', -1e-3, -0.001],
+		['.000123456789', .000123456789, 123456789e-12],
+		['.1e-9', .1e-9, 1e-10, .0000000001],
+		['-.12e-8', -0.12e-8, -12e-10],
+		['.123456789e-9', 123456789e-18, .123456789e-9],
+		['.1234e-6', 1234e-10, 1.234e-7],
+		['-1e-4', -1e-4, -0.001e-1]
+	];
+	for (const equiv of input) {
+		const target = equiv[0];
+		for (let i = 1; i < equiv.length; ++i) {
+			const result = PathData.coord(equiv[i] as number);
+			if (result !== target || Number(result) !== equiv[i]) {
+				console.log("Error:", target, result, equiv[i]);
+			}
+		}
+	}
+}
 
 namespace PathData {
 
-	export function coord(n: number, step: number | undefined): string {
+	export function coord(n: number, step?: number | undefined): string {
 		if (!Number.isFinite(n)) {
 			throw RangeError('Coordinate must be a finite number.');
 		}
