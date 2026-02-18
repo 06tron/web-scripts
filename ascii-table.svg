@@ -1,30 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0,0,170,90" style="color-scheme:dark light" fill-rule="evenodd">
-<style>
-table {
-	font: 4px monospace;
-	height: 90px;
-	table-layout: fixed;
-	text-align: center;
-	width: 170px;
-}
-th {
-	font-style: italic;
-	font-weight: normal;
-	opacity: 0.7;
-}
-</style>
-<path fill="Green" d="M1,4h10v1h6v3h-1v1h-1v-1h-3v1h-11v-1h1v-1h-1v-1h1v-1h-1zm11,2h4v1h-4zm2-3h2v1h-2z" transform="scale(10)"/>
-<path fill="Red" d="M1,1h16v2h-10v1h-1v-1h-1v1h-2v-1h-1v1h-1zm12,3h1v1h-1zm2,0h1v1h-1zm-3,2h4v1h-4zm-11,1h1v1h-1zm11,1h3v1h-3zm4,0h1v1h-1z" transform="scale(10)"/>
-<foreignObject width="170" height="90"><table xmlns="http://www.w3.org/1999/xhtml">
-<tr><td></td><th>x0</th><th>x1</th><th>x2</th><th>x3</th><th>x4</th><th>x5</th><th>x6</th><th>x7</th><th>x8</th><th>x9</th><th>xA</th><th>xB</th><th>xC</th><th>xD</th><th>xE</th><th>xF</th></tr>
-<tr><th>0x</th><td>␀</td><td>␁</td><td>␂</td><td>␃</td><td>␄</td><td>␅</td><td>␆</td><td>␇</td><td>␈</td><td>␉</td><td>␊</td><td>␋</td><td>␌</td><td>␍</td><td>␎</td><td>␏</td></tr>
-<tr><th>1x</th><td>␐</td><td>␑</td><td>␒</td><td>␓</td><td>␔</td><td>␕</td><td>␖</td><td>␗</td><td>␘</td><td>␙</td><td>␚</td><td>␛</td><td>␜</td><td>␝</td><td>␞</td><td>␟</td></tr>
-<tr><th>2x</th><td>␠</td><td>!</td><td>"</td><td>#</td><td>$</td><td>%</td><td>&amp;</td><td>'</td><td>(</td><td>)</td><td>*</td><td>+</td><td>,</td><td>-</td><td>.</td><td>/</td></tr>
-<tr><th>3x</th><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>:</td><td>;</td><td>&lt;</td><td>=</td><td>></td><td>?</td></tr>
-<tr><th>4x</th><td>@</td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>F</td><td>G</td><td>H</td><td>I</td><td>J</td><td>K</td><td>L</td><td>M</td><td>N</td><td>O</td></tr>
-<tr><th>5x</th><td>P</td><td>Q</td><td>R</td><td>S</td><td>T</td><td>U</td><td>V</td><td>W</td><td>X</td><td>Y</td><td>Z</td><td>[</td><td>\</td><td>]</td><td>^</td><td>_</td></tr>
-<tr><th>6x</th><td>`</td><td>a</td><td>b</td><td>c</td><td>d</td><td>e</td><td>f</td><td>g</td><td>h</td><td>i</td><td>j</td><td>k</td><td>l</td><td>m</td><td>n</td><td>o</td></tr>
-<tr><th>7x</th><td>p</td><td>q</td><td>r</td><td>s</td><td>t</td><td>u</td><td>v</td><td>w</td><td>x</td><td>y</td><td>z</td><td>{</td><td>|</td><td>}</td><td>~</td><td>␡</td></tr>
-</table></foreignObject>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0,0,680,360" style="color-scheme:dark light" fill-rule="evenodd">
+	<about xmlns="https://6t.lt/about">Hi</about>
+	<style>
+		table {
+			border-collapse: collapse;
+			font: 16px monospace;
+			height: 360px;
+			table-layout: fixed;
+			text-align: center;
+			width: 680px;
+		}
+
+		td {
+			border: 1px solid #7773;
+		}
+
+		th {
+			font-style: italic;
+			font-weight: normal;
+			opacity: 0.7;
+		}
+
+		tr:nth-child(2) td,
+		tr:nth-child(3) td,
+		tr:nth-child(4) td:nth-child(2),
+		tr:nth-child(9) td:nth-child(17) {
+			color: Gray;
+		}
+	</style>
+	<g transform="scale(40)">
+		<path fill="#5af3" d="M1,4h10v1h6v3h-1v1h-1v-1h-3v1h-11v-1h1v-1h-1v-1h1v-1h-1zm11,2h4v1h-4zm2-3h2v1h-2z"/>
+		<path fill="#f053" d="M1,1h16v2h-10v1h-1v-1h-1v1h-2v-1h-1v1h-1zm12,3h1v1h-1zm2,0h1v1h-1zm-3,2h4v1h-4zm-11,1h1v1h-1zm11,1h3v1h-3zm4,0h1v1h-1z"/>
+	</g>
+	<foreignObject width="680" height="360"><table xmlns="http://www.w3.org/1999/xhtml">
+		<tr><th></th><th>x0</th><th>x1</th><th>x2</th><th>x3</th><th>x4</th><th>x5</th><th>x6</th><th>x7</th><th>x8</th><th>x9</th><th>xA</th><th>xB</th><th>xC</th><th>xD</th><th>xE</th><th>xF</th></tr>
+		<tr><th>0x</th><td>\0</td><td>␁</td><td>␂</td><td>␃</td><td>␄</td><td>␅</td><td>␆</td><td>␇</td><td>\b</td><td>\t</td><td>\n</td><td>\v</td><td>\f</td><td>\r</td><td>␎</td><td>␏</td></tr>
+		<tr><th>1x</th><td>␐</td><td>␑</td><td>␒</td><td>␓</td><td>␔</td><td>␕</td><td>␖</td><td>␗</td><td>␘</td><td>␙</td><td>␚</td><td>␛</td><td>␜</td><td>␝</td><td>␞</td><td>␟</td></tr>
+		<tr><th>2x</th><td>␠</td><td>!</td><td>"</td><td>#</td><td>$</td><td>%</td><td>&amp;</td><td>'</td><td>(</td><td>)</td><td>*</td><td>+</td><td>,</td><td>-</td><td>.</td><td>/</td></tr>
+		<tr><th>3x</th><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>:</td><td>;</td><td>&lt;</td><td>=</td><td>></td><td>?</td></tr>
+		<tr><th>4x</th><td>@</td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>F</td><td>G</td><td>H</td><td>I</td><td>J</td><td>K</td><td>L</td><td>M</td><td>N</td><td>O</td></tr>
+		<tr><th>5x</th><td>P</td><td>Q</td><td>R</td><td>S</td><td>T</td><td>U</td><td>V</td><td>W</td><td>X</td><td>Y</td><td>Z</td><td>[</td><td>\</td><td>]</td><td>^</td><td>_</td></tr>
+		<tr><th>6x</th><td>`</td><td>a</td><td>b</td><td>c</td><td>d</td><td>e</td><td>f</td><td>g</td><td>h</td><td>i</td><td>j</td><td>k</td><td>l</td><td>m</td><td>n</td><td>o</td></tr>
+		<tr><th>7x</th><td>p</td><td>q</td><td>r</td><td>s</td><td>t</td><td>u</td><td>v</td><td>w</td><td>x</td><td>y</td><td>z</td><td>{</td><td>|</td><td>}</td><td>~</td><td>␡</td></tr>
+	</table></foreignObject>
 </svg>
