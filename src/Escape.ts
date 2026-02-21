@@ -62,7 +62,7 @@ const pctEncoders = {
 		return encodeURI(str).replaceAll('#', '%23');
 	},
 	'qval-for-3986': function (str: string) {
-		return encodeURI(str).replace(/[#&'+]|%20/g, char => ({
+		return encodeURI(str).replace(/[#&+]|%20/g, char => ({
 			'#': '%23',
 			'&': '%26',
 			'+': '%2B',
