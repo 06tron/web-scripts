@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' lang='en' style='
+	--paragraph-font: "Avenir", "Segoe UI", sans-serif;
+	--p-font-size: 1.5rem;
+	--body-width: 60rem;
+	--b-side-margin: 1.5rem;
+'>
+
+<head>
+<meta charset='utf-8'/>
+<title>HTML Patterns</title>
+<meta name='author' content='https://orcid.org/0009-0001-0977-2029'/>
+<meta name='color-scheme' content='dark light'/>
+<meta name='viewport' content='width=device-width'/>
+<style>
+
+/* hyperlink */
+p a {
+	text-decoration: none;
+}
+p a:hover {
+	text-decoration: underline;
+}
+
+/* aside-note numbered indicator */
+p [id^="aNote_"]::after {
+	content: "[" counter(note-indicator) "]";
+	counter-increment: note-indicator;
+	font-size: smaller;
+	line-height: 0;
+	vertical-align: super;
+}
+
+p span.backup {
+	display: none;
+}
+
+/* aside-note numbered target */
+aside :has(> a[href^="#aNote_"])::before {
+	content: counter(note-target) ". ";
+	counter-increment: note-target;
+}
+
+</style>
+</head>
+
+<body style='
+	font: var(--p-font-size) var(--paragraph-font);
+	margin: 0 var(--b-side-margin);
+	max-width: var(--body-width);
+
+	counter-reset: note-indicator note-target;
+'>
+
+<p>
+<!-- 'p q' for dialogue -->
+When Rachel put supper on, her and the girl went and fixed some beds. But wouldn’t any of them come in. <q>She’s been dead long enough to get over that sort of foolishness</q>, I says. Because I got just as much respect for the dead as ere a man, but you’ve got to respect the dead themselves, and a woman that’s been dead in a box four days, the best way to respect her is to get her into the ground as quick as you can. But they wouldn’t do it.
+</p>
+
+<p>
+<!-- 'p cite' for the name of a work -->
+<!--  -->
+<cite>As I Lay Dying</cite> is a 1930 Southern Gothic novel by American author William Faulkner.<span id='aNote_uid.1'></span> Faulkner's fifth novel, it is consistently ranked among the best novels of the 20th century.<a id='aNote_uid.2' href='#aTarget_uid.2'><span class='backup'>*</span></a> The title is derived from William Marris's 1925 translation of Homer's <cite><a href='https://en.wikipedia.org/wiki/Odyssey'>Odyssey</a></cite>, referring to the similar themes of both works.
+</p>
+
+<aside>
+
+<p><a href='#aNote_uid.1'>^</a> Text.</p>
+<p id='aTarget_uid.2'><span class='backup'>* </span><a href='#aNote_uid.2'>^</a> Text.</p>
+
+
+</aside>
+
+<dl>
+	<dt><code>&lt;span id='aNote_uid.1'>&lt;/span></code></dt>
+	<dd><code>&lt;p>&lt;a href='#aNote_uid.1'>^&lt;/a> Text.&lt;/p></code></dd>
+	<dt><code>&lt;a id='aNote_uid.2' href='#aTarget_uid.2'>&lt;span class='backup'>*&lt;/span>&lt;/a></code></dt>
+	<dd><code>&lt;p id='aTarget_uid.2'>&lt;span class='backup'>* &lt;/span>&lt;a href='#aNote_uid.2'>^&lt;/a> Text.&lt;/p></code></dd>
+</dl>
+
+</body>
+
+</html>
