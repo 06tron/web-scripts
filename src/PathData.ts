@@ -37,7 +37,10 @@ function parseCoord(n: number, logStep: number | undefined): SplitCoord {
 }
 
 /**
- * Returns a minimal length string. A string starting with '.' is returned if possible. If no minimal length string starts with '.', then a string containing '.' or 'e' is returned if possible.
+ * Returns a minimal length string. A string starting with '.' is
+ * returned if possible. If no minimal length string starts with
+ * '.', then a string containing '.' or 'e' is returned if
+ * possible.
  * 
  * @param {SplitCoord} coord 
  * @returns {string}
@@ -46,11 +49,23 @@ function shortCoord(coord: SplitCoord): string {
 	const [sign, shortBase, , power] = coord;
 	if (power >= 2) {
 		return coord.join('');
-		// '0'.repeat(power) is not shorter than `e${power}`, and there's no benefit to using a different exponent. Appending '0' to shortBase decreases exponent by 1, but since power > 1 the decimal representation of the exponent won't decrease in length by more than one character. To justify inserting '.' into shortBase, the exponent part would need to decrease in length, but moving the decimal point to the left of its implicit position only increases the exponent.
+		// '0'.repeat(power) is not shorter than `e${power}`, and
+		// there's no benefit to using a different exponent. Appending
+		// '0' to shortBase decreases exponent by 1, but since power>1
+		// the decimal representation of the exponent won't decrease in
+		// length by more than one character. To justify inserting '.'
+		// into shortBase, the exponent part would need to decrease in
+		// length, but moving the decimal point to the left of its
+		// implicit position only increases the exponent.
 	}
 	if (power == 0 || power == 1) {
 		return sign + shortBase + '0'.repeat(power);
-		// Adds at most one character to shortBase, and any other representation would include an exponent part, which would be at least two extra characters. Note that this approach is suboptimal when power = 2, as even though '1e2' and '100' are the same length, the coordinate pair '1e2.1' is shorter than '100,.1'.
+		// Adds at most one character to shortBase, and any other
+		// representation would include an exponent part, which would
+		// be at least two extra characters. Note that this approach is
+		// suboptimal when power=2, as even though '1e2' and '100' are
+		// the same length, the coordinate pair '1e2.1' is shorter than
+		// '100,.1'.
 	}
 	if (power >= -shortBase.length && power <= -1) {
 		const i = shortBase.length + power;
@@ -59,21 +74,45 @@ function shortCoord(coord: SplitCoord): string {
 	}
 	if (power == -shortBase.length - 1) {
 		return sign + '.0' + shortBase;
-		// Adds two characters, but the result always starts with '.' or '-.' which cannot be improved upon.
+		// Adds two characters, but the result always starts with '.'
+		// or '-.' which cannot be improved upon.
 	}
 	const z = -power - shortBase.length;
-	// At this point, -power >= shortBase.length + 2, so z >= 2, and z is the number of zeros to be inserted between '.' and shortBase when not using an exponent.
+	// At this point, -power>=shortBase.length+2, so z>=2, and z is
+	// the number of zeros to be inserted between '.' and shortBase
+	// when not using an exponent.
 	const minExp = 'e' + power.toString();
 	// The exponent used when not inserting a decimal point.
 	const midExp = 'e' + (-z).toString();
-	// A larger (less negative) exponent used when inserting '.' directly to the left of shortBase. Since shortBase.length >= 1, we know z <= -power - 1, and -z >= power + 1.
+	// A larger (less negative) exponent used when inserting '.'
+	// directly to the left of shortBase. Since shortBase.length>=1,
+	// we know z<=-power-1, and -z>=power+1.
 	if (z + 1 <= minExp.length && z <= midExp.length) {
 		return sign + '.' + '0'.repeat(z) + shortBase;
-		// Without an exponent the result has a leading '.' and is not longer than the two exponent options. To show this is minimal, note that the result string will fall into one of three categories: (1) No exponent, (2) uses exponent but not '.', (3) uses '.' and exponent. For the first case, we prepend '.' and a fixed number of zeros, and this form is considered for output. In the second case, the decimal point is set implicitly, the exponent is minExp, and we consider this form for output. In the third case, we only consider a single form for output. This form uses midExp, and no other form using both '.' and an exponent is shorter. If we were to move the decimal to the left, we would add '0' at each step and increment the exponent. These steps can't reduce the length of the exponent by more than one, so adding the zeros cannot shorten the result. Moving the decimal to the right potentially adds zeros to the right of shortBase, and only makes the exponent more negative. We just need to consider one possible result from each of the three categories.
+		// Without an exponent the result has a leading '.' and is not
+		// longer than the two exponent options. To show this is
+		// minimal, note that the result string will fall into one of
+		// three categories: (1) No exponent, (2) uses exponent but not
+		// '.', (3) uses '.' and exponent. For the first case, we
+		// prepend '.' and a fixed number of zeros, and this form is
+		// considered for output. In the second case, the decimal point
+		// is set implicitly, the exponent is minExp, and we consider
+		// this form for output. In the third case, we only consider a
+		// single form for output. This form uses midExp, and no other
+		// form using both '.' and an exponent is shorter. If we were
+		// to move the decimal to the left, we would add '0' at each
+		// step and increment the exponent. These steps can't reduce
+		// the length of the exponent by more than one, so adding the
+		// zeros cannot shorten the result. Moving the decimal to the
+		// right potentially adds zeros to the right of shortBase, and
+		// only makes the exponent more negative. We just need to
+		// consider one possible result from each of the three
+		// categories.
 	}
 	if (midExp.length + 1 <= minExp.length) {
 		return sign + '.' + shortBase + midExp;
-		// The midExp form is preferred over minExp because of the leading decimal point.
+		// The midExp form is preferred over minExp because of the
+		// leading decimal point.
 	}
 	return sign + shortBase + minExp;
 }
