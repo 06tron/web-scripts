@@ -106,9 +106,13 @@ namespace Escape {
 		return `data:${mediatype};charset=utf-8,` + percent(data, '2396-uric');
 	}
 
-	export function uriVariable(key: string, value: string) {
-		return percent(key, 'qval-for-3986').replaceAll('=', '%3D')
-			+ '=' + percent(value, 'qval-for-3986');
+	export function objToQuery(pairs: { [k: string]: string }) {
+		const encoded = Object.entries(pairs).map(function ([k, v]) {
+			return percent(k, 'qval-for-3986').replaceAll('=', '%3D')
+				+ '='
+				+ percent(v, 'qval-for-3986');
+		});
+		return '?' + encoded.join('&');
 	}
 
 }

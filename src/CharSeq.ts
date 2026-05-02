@@ -67,12 +67,13 @@ class CharSeq {
 	}
 
 	toWebpage(arg = htmlCharMap, fellback = false) {
-		let prefix = 'https://6t.lt?'; 
+		const pairs = {
+			'h': this.charSwap(arg).toString()
+		};
 		if (!fellback) {
-			prefix += Escape.uriVariable('m', arg) + '&';
+			pairs['m'] = arg;
 		}
-		this.str = prefix + 'h=' + this.charSwap(arg).toQueryValue();
-		return this;
+		return 'https://6t.lt' + Escape.objToQuery(pairs); 
 	}
 	
 }
