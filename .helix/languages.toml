@@ -3,5 +3,10 @@ name = "typescript"
 indent = { tab-width = 2, unit = "\t" }
 rulers = [68, 101]
 
+[[language]]
+name = "xml"
+indent = { tab-width = 2, unit = "\t" }
+rulers = [68, 101]
+
 [language-server.typescript-language-server]
 command = "./node_modules/.bin/typescript-language-server"
