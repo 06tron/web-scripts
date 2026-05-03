@@ -3,6 +3,9 @@
 		"lib": [
 			"DOM",
 			"ESNext"
-		]
+		],
+		"module": "NodeNext",
+		"outDir": "dist",
+		"rootDir": "src"
 	}
 }

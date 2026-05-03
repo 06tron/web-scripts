@@ -148,7 +148,7 @@ function testShortCoord() {
 	}
 }
 
-namespace PathData {
+export namespace PathData {
 
 	export function coord(n: number, step?: number | undefined): string {
 		if (!Number.isFinite(n)) {

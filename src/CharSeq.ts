@@ -34,17 +34,17 @@ class CharSeq {
 	}
 
 	getNumbers(arg = ',') {
-		this.str = this.pullNumberArray().map(n => PathData.coord(n)).join(arg);
+		//this.str = this.pullNumberArray().map(n => PathData.coord(n)).join(arg);
 		return this;
 	}
 
 	toDataURI(arg = 'text/plain') {
-		this.str = Escape.dataURI(this.str, arg);
+		//this.str = Escape.dataURI(this.str, arg);
 		return this;
 	}
 
 	toQueryValue() {
-		this.str = Escape.percent(this.str, 'qval-for-3986');
+		//this.str = Escape.percent(this.str, 'qval-for-3986');
 		return this;
 	}
 
@@ -73,7 +73,8 @@ class CharSeq {
 		if (!fellback) {
 			pairs['m'] = arg;
 		}
-		return 'https://6t.lt' + Escape.objToQuery(pairs); 
+		//this.sr = 'https://6t.lt' + Escape.objToQuery(pairs);
+		return this;
 	}
 	
 }

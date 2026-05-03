@@ -90,7 +90,7 @@ const pctEncoders = {
 	}
 };
 
-namespace Escape {
+export namespace Escape {
 
 	export function percent(str: string, encoder: string = '2396-uric'): string {
 		if (!str.isWellFormed()) {

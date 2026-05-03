@@ -1,6 +1,10 @@
 {
+  "type": "module",
   "name": "web-scripts",
   "version": "0.0.0",
+  "exports": {
+    "./*": "./dist/*.js"
+  },
   "devDependencies": {
     "chokidar": "^5.0.0",
     "http-server": "^14.1.1",
