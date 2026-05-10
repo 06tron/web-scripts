@@ -5,6 +5,44 @@ This Source Code Form is subject to the terms of the Mozilla Public
 License, v. 2.0. If a copy of the MPL was not distributed with this
 file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+const xmlCharData: ByteProcessor = (byte: number) => {
+	switch (byte) {
+		case 0x26: // & → &amp;
+			return [0x26, 0x61, 0x6D, 0x70, 0x3B];
+		case 0x3C: // < → &lt;
+			return [0x26, 0x6C, 0x74, 0x3B];
+		case 0x3E: // > → &gt;
+			return [0x26, 0x67, 0x74, 0x3B];
+		default:
+			return byte;
+	}
+};
+
+function hexDigit(nybl: number) {
+	return nybl + (nybl < 0x0A ? 0x30 : 0x57);
+}
+
+const urlQueryValue: ByteProcessor = (byte: number) => {
+	if (
+		(byte == 0x7E) ||
+		(byte <= 0x7A && byte >= 0x61) ||
+		(byte == 0x5F) ||
+		(byte <= 0x5A && byte >= 0x3F) ||
+		(byte == 0x3D) ||
+		(byte <= 0x3B && byte >= 0x2C) ||
+		(byte <= 0x2A && byte >= 0x27) ||
+		(byte == 0x24) ||
+		(byte == 0x21)
+	) {
+		return byte;
+	}
+	return [
+		0x25,
+		hexDigit(byte >> 4),
+		hexDigit(byte & 0x0F)
+	];
+};
+
 function pctEncodingPair(cp: number): [string, string] {
 	const regular = String.fromCodePoint(cp);
 	if (cp > 0x7F) {
