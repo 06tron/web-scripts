@@ -7,7 +7,7 @@ file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 type ByteProcessor = (byte: number) => number | number[];
 
-export default class TextUTF8 {
+class TextUTF8 {
 
 	#parts: Uint8Array[] = [];
 	length: number = 0;
@@ -68,6 +68,7 @@ export default class TextUTF8 {
 		} else {
 			this.#readString(String(source));
 		}
+		return this;
 	}
 
 	static fromBytes(bytes: Iterable<number>, maxLength?: number) {
@@ -86,6 +87,10 @@ export default class TextUTF8 {
 		}
 		return output;
 	}
+
+	static fromString(source: string) {
+		return new TextUTF8().#readString(source);
+	}
 	
 	static tag(strings: TemplateStringsArray, ...values: any[]) {
 		const output = new TextUTF8();
@@ -95,6 +100,11 @@ export default class TextUTF8 {
 			output.#readString(strings[i + 1]);
 		}
 		return output;
+	}
+
+	add(source: TextUTF8 | string) {
+		this.#readAny(source);
+		return this;
 	}
 
 	process(...steps: ByteProcessor[]) {
@@ -118,7 +128,10 @@ export default class TextUTF8 {
 		for (let i = 0; i < this.#parts.length; ++i) {
 			const tPart = sPart + this.#parts[i].length;
 			if (s < tPart) {
-				const p = this.#parts[i].subarray(s - sPart, t - sPart);
+				const p = this.#parts[i].subarray(
+					Math.max(0, s - sPart),
+					Math.max(0, t - sPart)
+				);
 				if (p.length > 0) {
 					trimmed.push(p);
 				}
@@ -130,6 +143,7 @@ export default class TextUTF8 {
 		}
 		this.#parts = trimmed;
 		this.length = Math.max(0, t - s);
+		return this;
 	}
 
 	toString() {
@@ -145,3 +159,5 @@ export default class TextUTF8 {
 	}
 
 }
+
+export { ByteProcessor, TextUTF8 };
