@@ -22,14 +22,15 @@ const prefix = `<!DOCTYPE html>
 	<meta name="format-detection" content="telephone=no"/>
 	<meta name="viewport" content="width=device-width"/>
 	<link rel="icon" href="https://home.6t.lt/icons/48.svg"/>
-	<link rel="stylesheet" href="https://home.6t.lt/style.css"/>
+	<link rel="stylesheet" href="https://home.6t.lt/shared-style.css"/>
+	<link rel="stylesheet" href="https://home.6t.lt/column-style.css"/>
 	<script>
 		const sse = new EventSource('/sse');
 		sse.onmessage = e => (e.data === 'reload' &amp;&amp; window.location.reload());
 	</script>
-</head><body>`;
-const infixPath = `../../articles/${process.argv[2]}.xml`;
-const suffix = '</body></html>';
+</head><body><article>`;
+const infixPath = `../06tron/articles/${process.argv[2]}.xml`;
+const suffix = '</article></body></html>';
 const connected = new Set();
 let updates = 0;
 
